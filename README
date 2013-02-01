@@ -1,0 +1,1 @@
+head rawdata.list | print_mofia_commands.sh test.kcm | parallel.pl 20
