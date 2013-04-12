@@ -50,6 +50,7 @@ sub start_new_jobs() {
       my $pid = newchild();
       if($pid > 0) {
 	  push @kids, $pid;
+	  print localtime() . ": Process $pid started\n";
       }
       else {
 	  last STARTLOOP;
@@ -62,19 +63,21 @@ do {
     start_new_jobs();
     sleep 1;
 
-    print "checking status of ",(1+$#kids)," kids\n";
     my @newkids;
     foreach my $kid (@kids) {
 	my $pid = waitpid($kid, WNOHANG);
-	print "for kid $kid got wait = $pid\n";
 	if(0 == $pid) {
 	    push @newkids, $kid;
 	}
+	else {
+	    print localtime() . ": Process $pid finished\n";
+	}
     }
+
     @kids = @newkids;
 
 } while ($#kids > -1);
 
-print "All done\n";
+print localtime() . ": All done\n";
 
 exit 0;
