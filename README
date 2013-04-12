@@ -1,6 +1,6 @@
 The general purpose script here is parallel.pl
 It allows on to run a long list of jobs, while efficiently utilizing
-up to a given number of CPU cores on a host.  This is useful on useful
+up to a given number of CPU cores on a host.  This is useful
 on multi-core machines when a real batch system is not available.
 
 To use it, first prepare a text file with one command you want to run
