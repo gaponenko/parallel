@@ -1,1 +1,17 @@
-head rawdata.list | print_mofia_commands.sh test.kcm | parallel.pl 20
+The general purpose script here is parallel.pl
+It allows on to run a long list of jobs, while efficiently utilizing
+up to a given number of CPU cores on a host.  This is useful on useful
+on multi-core machines when a real batch system is not available.
+
+To use it, first prepare a text file with one command you want to run
+per line.  Whatever you type in will be passed to the shell.  Then do
+
+cat mycommands.txt | parallel.pl 5
+
+this will start up to 5 processes, and as any one finishes will start
+another until the input from mycommands.txt is exhausted.
+
+The other scripts are helpers to run TWIST MOFIA program.
+Example of use:
+
+head rawdata.list | print_mofia_commands.sh test.kcm | parallel.pl 5
