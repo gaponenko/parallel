@@ -23,7 +23,10 @@ if [ ! -r $ybs ]; then
     exit 1
 fi
 
-bn=$(basename $ybs .ybs)
+bn=$(basename $(basename $ybs .ybs) .dat)
+echo "KCM = $kcm"
+echo "Data file = $ybs"
+echo "bn = $bn"
 if mkdir $bn && cd $bn; then
     /usr/bin/time ${MOFIA_USER:?MOFIA_USER not set}/photo $kcm $ybs > job.log 2>&1 <<EOF
 show name all
