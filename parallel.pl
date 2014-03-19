@@ -35,6 +35,8 @@ sub newchild() {
 
     return 0 unless my $line = get_next_command();
 
+    print localtime() . ": About to do: $line";
+
     my $pid = fork();
     die "Can't fork: $!\n" unless defined $pid;
     if($pid) {
