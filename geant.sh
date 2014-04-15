@@ -17,6 +17,9 @@ if [ ! -r $FFCARD ]; then
 fi
 
 run=${2:?Run number arg missing}
+nevt=${3:?Num events missing}
+
+export DIO_SPECTRUM=$CAL_DB/dio.00003
 
 #========================================================
 # For the Aluminium 2007 run period
@@ -174,7 +177,7 @@ echo "Run number = $run"
 bn="run$run"
 echo "bn = $bn"
 if mkdir $bn && cd $bn; then
-    sed -e 's/^RUNG .*/RUNG '$run'/' $FFCARD > thisjob.ffcards
+    sed -e 's/^RUNG .*/RUNG '$run'/' -e 's/^TRIG .*/TRIG '$nevt'/' $FFCARD > thisjob.ffcards
     export FFCARD=thisjob.ffcards
     /usr/bin/time ${GEANT_BIN:?GEANT_BIN not set}/bat614 > run$run.log 2>&1
     ret=$?
