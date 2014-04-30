@@ -48,21 +48,27 @@ sub newchild() {
 }
 
 sub start_new_jobs() {
+    my $nstarted = 0;
+
   STARTLOOP: while(1+$#kids < $nparallel) {
       my $pid = newchild();
       if($pid > 0) {
 	  push @kids, $pid;
 	  print localtime() . ": Process $pid started\n";
+	  ++$nstarted;
       }
       else {
 	  last STARTLOOP;
       }
   }
+
+    return $nstarted;
 }
 
 #================================================================
+my $nnew = 0;
 do {
-    start_new_jobs();
+    $nnew = start_new_jobs();
     sleep 1;
 
     my @newkids;
@@ -78,7 +84,7 @@ do {
 
     @kids = @newkids;
 
-} while ($#kids > -1);
+} while (($#kids > -1) || ($nnew > 0));
 
 print localtime() . ": All done\n";
 
