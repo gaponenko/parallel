@@ -68,9 +68,6 @@ sub start_new_jobs() {
 #================================================================
 my $nnew = 0;
 do {
-    $nnew = start_new_jobs();
-    sleep 1;
-
     my @newkids;
     foreach my $kid (@kids) {
 	my $pid = waitpid($kid, WNOHANG);
@@ -83,6 +80,10 @@ do {
     }
 
     @kids = @newkids;
+
+    $nnew = start_new_jobs();
+
+    sleep 1;
 
 } while (($#kids > -1) || ($nnew > 0));
 
