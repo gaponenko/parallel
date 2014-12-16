@@ -24,6 +24,9 @@ if [ ! -r $ybs ]; then
 fi
 
 bn=$(basename $(basename $ybs .ybs) .dat)
+if ! (echo $bn|grep -q '^.*[0-9]\{6\}$') ;  then
+    bn=$(basename $(dirname $ybs))
+fi
 echo "KCM = $kcm"
 echo "Data file = $ybs"
 echo "bn = $bn"
