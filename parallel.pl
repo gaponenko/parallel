@@ -20,6 +20,7 @@ die "Argument should be a positive integer, got $ARGV[0]\n"
 
 my $nparallel = $ARGV[0];
 my @kids = ();
+my %commands;
 
 #================================================================
 sub get_next_command() {
@@ -40,6 +41,8 @@ sub newchild() {
     my $pid = fork();
     die "Can't fork: $!\n" unless defined $pid;
     if($pid) {
+	$commands{$pid} = $line;
+	chomp $commands{$pid};
 	return $pid;
     }
 
@@ -71,11 +74,13 @@ do {
     my @newkids;
     foreach my $kid (@kids) {
 	my $pid = waitpid($kid, WNOHANG);
+	my $pidstatus = $?;
 	if(0 == $pid) {
 	    push @newkids, $kid;
 	}
 	else {
-	    print localtime() . ": Process $pid finished\n";
+	    print localtime() . ": Process $pid finished with status $pidstatus ( ".$commands{$pid}." )\n";
+	    delete $commands{$pid};
 	}
     }
 
