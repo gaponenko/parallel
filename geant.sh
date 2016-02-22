@@ -19,8 +19,6 @@ fi
 run=${2:?Run number arg missing}
 nevt=${3:?Num events missing}
 
-export DIO_SPECTRUM=$CAL_DB/dio.00003
-
 #========================================================
 # For the Aluminium 2007 run period
 export CHGEOM=$CAL_DB/dt_geo.00066
@@ -99,6 +97,9 @@ export OPERAMAP=$CAL_DB/bfld_map.00026
 #========================================================
 # For the Large Target 2007 run period
 # setenv OPERAMAP $CAL_DB/bfld_map.00027
+#========================================================
+# This is only used by the muminus DIO mode MUBR=91
+export DIO_SPECTRUM=$CAL_DB/dio.00003
 #========================================================
 #
 # location of all output files
