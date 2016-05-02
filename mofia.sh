@@ -24,20 +24,21 @@ if [ ! -r $ybs ]; then
 fi
 
 bn=$(basename $(basename $ybs .ybs) .dat)
-if ! (echo $bn|grep -q '^.*[0-9]\{6\}$') ;  then
-    bn=$(basename $(dirname $ybs))
-fi
+#if ! (echo $bn|grep -q '^.*[0-9]\{6\}$') ;  then
+#    bn=$(basename $(dirname $ybs))
+#fi
 echo "KCM = $kcm"
 echo "Data file = $ybs"
 echo "bn = $bn"
 if mkdir $bn && cd $bn; then
-    /usr/bin/time ${MOFIA_USER:?MOFIA_USER not set}/photo $kcm $ybs > job.log 2>&1 <<EOF
+    echo "Doing: /usr/bin/time ${MOFIA_USER:?MOFIA_USER not set}/photo $kcm $ybs" > job.log
+    /usr/bin/time ${MOFIA_USER:?MOFIA_USER not set}/photo $kcm $ybs >> job.log 2>&1 <<EOF
 show name all
 ana
 exit
 EOF
 ret=$?
-echo "MOFIA exit status: $ret"
+echo "MOFIA exit status: $ret" >> job.log
 exit $ret
 fi
 
