@@ -22,6 +22,9 @@ my $nparallel = $ARGV[0];
 my @kids = ();
 my %commands;
 
+my $progress_startcount = 0;
+my $progress_exitcount = 0;
+
 #================================================================
 sub get_next_command() {
     my $line;
@@ -36,7 +39,7 @@ sub newchild() {
 
     return 0 unless my $line = get_next_command();
 
-    print localtime() . ": About to do: $line";
+    print localtime() . " [",++$progress_startcount,"]: About to do: $line";
 
     my $pid = fork();
     die "Can't fork: $!\n" unless defined $pid;
@@ -79,7 +82,7 @@ do {
 	    push @newkids, $kid;
 	}
 	else {
-	    print localtime() . ": Process $pid finished with status $pidstatus ( ".$commands{$pid}." )\n";
+	    print localtime() . " [",++$progress_exitcount,"]: Process $pid finished with status $pidstatus ( ".$commands{$pid}." )\n";
 	    delete $commands{$pid};
 	}
     }
