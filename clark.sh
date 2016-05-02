@@ -42,7 +42,7 @@ echo "bn = $bn"
 if mkdir cr$bn && cd cr$bn; then
     /usr/bin/time ${exe} -l clark$bn.log -o clark$bn.root $cfg $tree > job.log 2>&1
     ret=$?
-    echo "Clark exit status: $ret"
+    echo "Clark exit status: $ret" >> job.log
     exit $ret
 fi
 
