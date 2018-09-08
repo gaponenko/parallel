@@ -26,6 +26,17 @@ my $progress_startcount = 0;
 my $progress_exitcount = 0;
 
 #================================================================
+# This is to allow runtime modification of the number of parallel jobs.
+# If the limit is increased, new jobs start 
+
+sub increase_limit { ++$nparallel; }
+$SIG{USR1} = \&increase_limit;
+
+sub decrease_limit { --$nparallel unless $nparallel < 2; }
+$SIG{USR2} = \&decrease_limit;
+
+
+#================================================================
 sub get_next_command() {
     my $line;
     while(defined($line = <STDIN>)) {
@@ -73,6 +84,7 @@ sub start_new_jobs() {
 
 #================================================================
 my $nnew = 0;
+my $last_printed_limit = $nparallel;
 do {
     my @newkids;
     foreach my $kid (@kids) {
@@ -92,6 +104,10 @@ do {
     $nnew = start_new_jobs();
 
     sleep 1;
+    if($last_printed_limit != $nparallel) {
+	print localtime() . " Current nparallel = $nparallel\n";
+	$last_printed_limit = $nparallel;
+    }
 
 } while (($#kids > -1) || ($nnew > 0));
 
