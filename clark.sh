@@ -44,6 +44,9 @@ if mkdir cr$bn && cd cr$bn; then
     ret=$?
     echo "Clark exit status: $ret" >> job.log
     exit $ret
+else
+    echo "ERROR assuming working directory cr$bn" >&2
+    exit 1
 fi
 
 exit 1
